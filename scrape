@@ -1,0 +1,36 @@
+#!/bin/bash
+which wget 1>/dev/null 2>/dev/null
+if [ $? -ne 0 ]
+then
+ echo "please install wget"
+ exit 1
+fi
+if [ -e "index.html" ]
+then
+ echo  "removing old index file"
+ rm -rf index.html
+fi
+url="https://www.keepinspiring.me/famous-quotes/"
+wget $url
+if [ $? -ne 0 ]
+then
+ echo "unable to download"
+ exit 2
+fi
+declare -a lines
+while read line
+do
+        lines+=($(echo $line | grep "author-qoutes" $index.html | sed -i 's/<[^>]*>//g' ))
+done < index.html
+cnt=0
+no_ver=${#lines[*]}
+for each_var in ${lines[*]}
+        do
+                echo -e ${lines[$cnt]}
+                cnt=cnt+1
+                if [ $cnt -ge $no_ver ]
+                then
+                        break
+                fi
+        done
+~            
